@@ -22,6 +22,9 @@ void mesh_generator::generate(const string & filename)
     if(!ifs.good())
     {
         cerr << "Error: " << filename << " is not good." << endl;
+#if defined _WIN32
+        system("pause");
+#endif
         exit(EXIT_FAILURE);
     }
     double x_min, x_max, y_min, y_max, z_min, z_max;
@@ -32,6 +35,9 @@ void mesh_generator::generate(const string & filename)
     if(!ifs.good())
     {
         cerr << "Error: " << filename << " is not good." << endl;
+#if defined _WIN32
+        system("pause");
+#endif
         exit(EXIT_FAILURE);
     }
     ifs.close();
