@@ -18,6 +18,7 @@ void mesh_generator::triangulate(const string & filename)
 // Сгенерировать базовую параллелепипедальную сетку
 void mesh_generator::generate(const string & filename)
 {
+    cout << "Reading area ..." << endl;
     ifstream ifs(filename.c_str());
     if(!ifs.good())
     {
@@ -42,6 +43,7 @@ void mesh_generator::generate(const string & filename)
     }
     ifs.close();
 
+    cout << "Generating nodes ..." << endl;
     double hx = (x_max - x_min) / static_cast<double>(x_num),
            hy = (y_max - y_min) / static_cast<double>(y_num),
            hz = (z_max - z_min) / static_cast<double>(z_num);
@@ -63,6 +65,7 @@ void mesh_generator::generate(const string & filename)
         }
     }
 
+    cout << "Generating cubes ..." << endl;
     cubes.resize(x_num * y_num * z_num);
     for(size_t i = 0 , m = 0; i < x_num; i++)
     {
@@ -93,6 +96,7 @@ void mesh_generator::generate(const string & filename)
 // Разбить параллелепипедальную сетку на тетраэдры
 void mesh_generator::triangulate()
 {
+    cout << "Generating tetrahedrons ..." << endl;
     for(size_t i = 0; i < nodes.size(); i++)
         nodes[i].num = i;
 
@@ -233,6 +237,7 @@ void mesh_generator::triangulate()
 // Вывод сетки в файл в формате gmsh
 void mesh_generator::out_gmsh(const string & filename)
 {
+    cout << "Writing mesh ..." << endl;
     ofstream ofs(filename.c_str());
     ofs << "$MeshFormat" << endl
         << "2.2 0 8" << endl
@@ -275,6 +280,7 @@ void mesh_generator::out_gmsh(const string & filename)
 // Построить вложенную сетку
 void mesh_generator::split()
 {
+    cout << "Splitting mesh ..." << endl;
     // Кэш номеров точек для тех ребер, что уже были посчитаны
     map<pair<size_t, size_t>, size_t> point_map;
 
