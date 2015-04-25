@@ -4,11 +4,11 @@ int main()
 {
     mesh_generator ar;
     ar.triangulate("area.txt");
-    ar.out_gmsh("mesh.msh");
+    ar.out_gmsh("cube_x1.msh");
     ar.split();
-    ar.out_gmsh("mesh2.msh");
+    ar.out_gmsh("cube_x2.msh");
     ar.split();
-    ar.out_gmsh("mesh4.msh");
+    ar.out_gmsh("cube_x4.msh");
 #if defined _WIN32
     system("pause");
 #endif
