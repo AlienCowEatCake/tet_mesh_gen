@@ -237,28 +237,29 @@ void mesh_generator::triangulate()
 // Вывод сетки в файл в формате gmsh
 void mesh_generator::out_gmsh(const string & filename)
 {
-    cout << "Writing mesh ..." << endl;
+    const char newl = '\n';
+    cout << "Writing mesh ..." << newl;
     ofstream ofs(filename.c_str());
-    ofs << "$MeshFormat" << endl
-        << "2.2 0 8" << endl
-        << "$EndMeshFormat" << endl
-        << "$Nodes" << endl;
-    ofs << nodes.size() << endl;
+    ofs << "$MeshFormat" << newl
+        << "2.2 0 8" << newl
+        << "$EndMeshFormat" << newl
+        << "$Nodes" << newl;
+    ofs << nodes.size() << newl;
     for(size_t i = 0; i < nodes.size(); i++)
-        ofs << i + 1 << " " << nodes[i].x << " " << nodes[i].y << " " << nodes[i].z << endl;
-    ofs << "$EndNodes" << endl
-        << "$Elements" << endl;
+        ofs << i + 1 << " " << nodes[i].x << " " << nodes[i].y << " " << nodes[i].z << newl;
+    ofs << "$EndNodes" << newl
+        << "$Elements" << newl;
     size_t num = tets.size();
     for(size_t i = 0; i < 6; i++)
         num += trs[i].size();
-    ofs << num << endl;
+    ofs << num << newl;
     num = 1;
     for(size_t i = 0; i < tets.size(); i++)
     {
         ofs << num << " 4 2 27 26";
         for(size_t j = 0; j < 4; j++)
             ofs << " " << tets[i].nodes[j] + 1;
-        ofs << endl;
+        ofs << newl;
         num++;
     }
     string phys[6] = { "30 18", "29 16", "32 22", "33 24", "28 14", "31 20" };
@@ -269,11 +270,11 @@ void mesh_generator::out_gmsh(const string & filename)
             ofs << num << " 2 2 " << phys[k];
             for(size_t j = 0; j < 3; j++)
                 ofs << " " << trs[k][i].nodes[j] + 1;
-            ofs << endl;
+            ofs << newl;
             num++;
         }
     }
-    ofs << "$EndElements" << endl << endl;
+    ofs << "$EndElements" << newl << newl << flush;
     ofs.close();
 }
 
