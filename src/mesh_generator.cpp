@@ -41,6 +41,31 @@ void mesh_generator::generate(const string & filename)
 #endif
         exit(EXIT_FAILURE);
     }
+
+    ifs >> phys_vol >> geom_vol;
+    if(!ifs.good())
+    {
+        phys_vol = 27;
+        geom_vol = 26;
+    }
+
+    for(size_t i = 0; i < 6; i++)
+        ifs >> phys_surf[i] >> geom_surf[i];
+    if(!ifs.good())
+    {
+        phys_surf[0] = 30;
+        geom_surf[0] = 18;
+        phys_surf[1] = 29;
+        geom_surf[1] = 16;
+        phys_surf[2] = 32;
+        geom_surf[2] = 22;
+        phys_surf[3] = 33;
+        geom_surf[3] = 24;
+        phys_surf[4] = 28;
+        geom_surf[4] = 14;
+        phys_surf[5] = 31;
+        geom_surf[5] = 20;
+    }
     ifs.close();
 
     cout << "Generating nodes ..." << endl;
@@ -256,18 +281,17 @@ void mesh_generator::out_gmsh(const string & filename)
     num = 1;
     for(size_t i = 0; i < tets.size(); i++)
     {
-        ofs << num << " 4 2 27 26";
+        ofs << num << " 4 2 " << phys_vol << " " << geom_vol;
         for(size_t j = 0; j < 4; j++)
             ofs << " " << tets[i].nodes[j] + 1;
         ofs << newl;
         num++;
     }
-    string phys[6] = { "30 18", "29 16", "32 22", "33 24", "28 14", "31 20" };
     for(size_t k = 0; k < 6; k++)
     {
         for(size_t i = 0; i < trs[k].size(); i++)
         {
-            ofs << num << " 2 2 " << phys[k];
+            ofs << num << " 2 2 " << phys_surf[k] << " " << geom_surf[k];
             for(size_t j = 0; j < 3; j++)
                 ofs << " " << trs[k][i].nodes[j] + 1;
             ofs << newl;
